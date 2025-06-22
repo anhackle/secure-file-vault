@@ -40,6 +40,13 @@ type UploadSetting struct {
 	Key string `mapstructure:"key"`
 }
 
+type MinioSetting struct {
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	Username string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
+}
+
 type Config struct {
 	Server ServerSetting `mapstructure:"server"`
 	Mysql  MySQLSetting  `mapstructrue:"mysql"`
@@ -47,4 +54,5 @@ type Config struct {
 	Redis  RedisSetting  `mapstructure:"redis"`
 	JWT    JWTSetting    `mapstructure:"jwt"`
 	Upload UploadSetting `mapstructure:"upload"`
+	Minio  MinioSetting  `mapstructure:"minio"`
 }

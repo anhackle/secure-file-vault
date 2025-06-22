@@ -8,19 +8,14 @@ import (
 	"time"
 )
 
-type User struct {
-	ID       int32
-	Email    string
-	Password string
-}
-
-type UserInfo struct {
-	ID          int32
-	UserID      int32
-	FullName    string
-	Gender      bool
-	BirthDay    time.Time
-	Address     string
-	Phone       string
-	Description string
+type UploadedFile struct {
+	ID            string
+	OriginalName  string
+	S3Key         string
+	MimeType      string
+	FileSize      int64
+	CreatedAt     time.Time
+	ExpiredAt     time.Time
+	DownloadCount int32
+	IsDeleted     int32
 }

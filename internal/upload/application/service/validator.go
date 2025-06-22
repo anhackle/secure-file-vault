@@ -1,5 +1,7 @@
 package service
 
+import "path/filepath"
+
 var FileContentTypes = []string{
 	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 	"application/vnd.ms-excel",
@@ -30,6 +32,10 @@ var FileExtensions = []string{
 	".jpeg",
 	".png",
 	".gif",
+}
+
+func GetFileExtension(fileName string) string {
+	return filepath.Ext(filepath.Base(fileName))
 }
 
 func CheckContentType(contentTypeInput string) bool {

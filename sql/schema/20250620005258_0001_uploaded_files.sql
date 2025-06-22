@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS uploaded_files (
     s3_key TEXT NOT NULL,
     mime_type TEXT NOT NULL,
     file_size BIGINT NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    expired_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NULL,
+    expired_at TIMESTAMP NULL,
     download_count INT NOT NULL DEFAULT 5,
-    is_deleted INT NOT NULL DEFAULT FALSE,
+    is_deleted INT NOT NULL DEFAULT FALSE
 );
 -- +goose StatementEnd
 
