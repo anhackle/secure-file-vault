@@ -36,10 +36,15 @@ type JWTSetting struct {
 	Key string `mapstructure:"key"`
 }
 
+type UploadSetting struct {
+	Key string `mapstructure:"key"`
+}
+
 type Config struct {
 	Server ServerSetting `mapstructure:"server"`
 	Mysql  MySQLSetting  `mapstructrue:"mysql"`
 	Logger LoggerSetting `mapstructure:"logger"`
 	Redis  RedisSetting  `mapstructure:"redis"`
 	JWT    JWTSetting    `mapstructure:"jwt"`
+	Upload UploadSetting `mapstructure:"upload"`
 }

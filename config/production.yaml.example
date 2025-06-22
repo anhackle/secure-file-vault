@@ -24,3 +24,5 @@ redis:
   database: 0
 jwt:
   key: jwtkey_test
+upload:
+  key: aes_key
