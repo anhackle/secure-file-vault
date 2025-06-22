@@ -26,3 +26,9 @@ jwt:
   key: jwtkey_test
 upload:
   key: aes_key
+minio:
+  username: minioadmin
+  password: minioadmin
+  host: localhost
+  port: 9000
+

@@ -8,9 +8,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/anle/codebase/global"
 	"github.com/anle/codebase/internal/upload/application/service"
+	"github.com/anle/codebase/internal/upload/domain/entity"
 	"github.com/anle/codebase/internal/upload/domain/repository"
 	"github.com/anle/codebase/response"
 )
@@ -57,14 +59,39 @@ func (us *UploadService) Upload(ctx context.Context, fileHeader *multipart.FileH
 	}
 
 	// Write the encrypted file content to a new file
-	dstPath := filepath.Join("/tmp", service.GenerateUUID()+filepath.Ext(fileHeader.Filename))
-	dst, err := os.Create(dstPath)
+	var (
+		fileUUID = service.GenerateUUID()
+		S3Key    = fileUUID + service.GetFileExtension(fileHeader.Filename)
+	)
+
+	dstPath := filepath.Join("/tmp", fileUUID+service.GetFileExtension(fileHeader.Filename))
+	dst, err := os.OpenFile(dstPath, os.O_CREATE|os.O_WRONLY, 0444)
 	if err != nil {
 		return response.ErrCodeInternal, err
 	}
 	defer dst.Close()
 
 	_, err = io.Copy(dst, strings.NewReader(encryptedFileName))
+	if err != nil {
+		return response.ErrCodeInternal, err
+	}
+
+	// Save metadata to the database
+	err = us.UploadRepository.SaveMetadata(ctx, &entity.MetadataUploadedFile{
+		ID:           fileUUID,
+		OriginalName: filepath.Base(fileHeader.Filename),
+		S3Key:        S3Key,
+		MimeType:     fileHeader.Header.Get("Content-Type"),
+		FileSize:     fileHeader.Size,
+		CreatedAt:    time.Now(),
+		ExpiredAt:    time.Now().AddDate(0, 0, 30),
+	})
+	if err != nil {
+		return response.ErrCodeInternal, err
+	}
+
+	// Upload the file to S3
+	err = us.UploadRepository.UploadFileToS3(ctx, "uploaded-files", S3Key, dstPath)
 	if err != nil {
 		return response.ErrCodeInternal, err
 	}

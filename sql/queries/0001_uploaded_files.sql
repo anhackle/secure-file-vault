@@ -1,11 +1,15 @@
--- name: CreateUser :execresult
-INSERT INTO `user` (
-    email,
-    password
+-- name: CreateMetadata :execresult
+INSERT INTO `uploaded_files` (
+    id,
+    original_name,
+    s3_key,
+    mime_type,
+    file_size,
+    created_at,
+    expired_at
 )
-VALUES (?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
--- name: FindByEmail :one
-SELECT id, email, password
-FROM `user`
-WHERE email = ?;
+-- name: DeleteMetadata :execresult
+DELETE FROM `uploaded_files`
+WHERE id = ?;

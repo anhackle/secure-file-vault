@@ -11,12 +11,13 @@ import (
 	"github.com/anle/codebase/internal/upload/application/usecase"
 	"github.com/anle/codebase/internal/upload/infrastructure/persistence/repository"
 	"github.com/anle/codebase/internal/upload/interfaces/http/handler"
+	"github.com/minio/minio-go/v7"
 )
 
 // Injectors from upload.wire.go:
 
-func InitUploadRouterHandler(dbc *sql.DB) (*handler.UploadHandler, error) {
-	iUploadRepository := repository.NewUploadRepository(dbc)
+func InitUploadRouterHandler(dbc *sql.DB, s3Client *minio.Client) (*handler.UploadHandler, error) {
+	iUploadRepository := repository.NewUploadRepository(dbc, s3Client)
 	iUploadService := usecase.NewUploadService(iUploadRepository)
 	uploadHandler := handler.NewUploadHandler(iUploadService)
 	return uploadHandler, nil

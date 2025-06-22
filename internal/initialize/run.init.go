@@ -6,8 +6,9 @@ func Run() {
 	InitMysql()
 	InitRedis()
 	InitValidator()
+	InitMinio()
 
 	r := InitRouter()
-	r.Run(":9000")
+	r.Run(":9005")
 
 }

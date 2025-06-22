@@ -9,7 +9,7 @@ import (
 type UploadRouter struct{}
 
 func (ar *UploadRouter) InitUploadRouter(router *gin.RouterGroup) {
-	uploadHandler, _ := wire.InitUploadRouterHandler(global.Mdb)
+	uploadHandler, _ := wire.InitUploadRouterHandler(global.Mdb, global.MinioClient)
 
 	AuthRouterPublic := router.Group("/upload")
 
