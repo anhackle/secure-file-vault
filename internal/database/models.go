@@ -5,7 +5,7 @@
 package database
 
 import (
-	"time"
+	"database/sql"
 )
 
 type UploadedFile struct {
@@ -14,8 +14,8 @@ type UploadedFile struct {
 	S3Key         string
 	MimeType      string
 	FileSize      int64
-	CreatedAt     time.Time
-	ExpiredAt     time.Time
+	CreatedAt     sql.NullTime
+	ExpiredAt     sql.NullTime
 	DownloadCount int32
 	IsDeleted     int32
 }
