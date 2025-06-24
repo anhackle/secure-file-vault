@@ -30,8 +30,8 @@ func (ur *UploadRepository) SaveMetadata(ctx context.Context, metadata *entity.M
 		S3Key:        metadata.S3Key,
 		MimeType:     metadata.MimeType,
 		FileSize:     metadata.FileSize,
-		CreatedAt:    metadata.CreatedAt,
-		ExpiredAt:    metadata.ExpiredAt,
+		CreatedAt:    sql.NullTime{Time: metadata.CreatedAt, Valid: true},
+		ExpiredAt:    sql.NullTime{Time: metadata.ExpiredAt, Valid: true},
 	})
 	if err != nil {
 		return err
@@ -48,4 +48,9 @@ func (ur *UploadRepository) UploadFileToS3(ctx context.Context, bucket, s3Key, d
 	}
 
 	return nil
+}
+
+// DeleteMetadata implements repository.IUploadRepository.
+func (ur *UploadRepository) DeleteMetadata(ctx context.Context, fileID string) (err error) {
+	panic("unimplemented")
 }

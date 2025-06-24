@@ -8,7 +8,6 @@ package database
 import (
 	"context"
 	"database/sql"
-	"time"
 )
 
 const createMetadata = `-- name: CreateMetadata :execresult
@@ -30,8 +29,8 @@ type CreateMetadataParams struct {
 	S3Key        string
 	MimeType     string
 	FileSize     int64
-	CreatedAt    time.Time
-	ExpiredAt    time.Time
+	CreatedAt    sql.NullTime
+	ExpiredAt    sql.NullTime
 }
 
 func (q *Queries) CreateMetadata(ctx context.Context, arg CreateMetadataParams) (sql.Result, error) {
@@ -44,4 +43,53 @@ func (q *Queries) CreateMetadata(ctx context.Context, arg CreateMetadataParams) 
 		arg.CreatedAt,
 		arg.ExpiredAt,
 	)
+}
+
+const deleteMetadata = `-- name: DeleteMetadata :execresult
+UPDATE ` + "`" + `uploaded_files` + "`" + `
+SET
+    is_deleted = 1
+WHERE id = ?
+`
+
+func (q *Queries) DeleteMetadata(ctx context.Context, id string) (sql.Result, error) {
+	return q.db.ExecContext(ctx, deleteMetadata, id)
+}
+
+const getExpiredMetadata = `-- name: GetExpiredMetadata :many
+SELECT
+    id,
+    s3_key,
+    expired_at
+FROM ` + "`" + `uploaded_files` + "`" + `
+WHERE is_deleted = 0 AND expired_at < NOW()
+`
+
+type GetExpiredMetadataRow struct {
+	ID        string
+	S3Key     string
+	ExpiredAt sql.NullTime
+}
+
+func (q *Queries) GetExpiredMetadata(ctx context.Context) ([]GetExpiredMetadataRow, error) {
+	rows, err := q.db.QueryContext(ctx, getExpiredMetadata)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetExpiredMetadataRow
+	for rows.Next() {
+		var i GetExpiredMetadataRow
+		if err := rows.Scan(&i.ID, &i.S3Key, &i.ExpiredAt); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
