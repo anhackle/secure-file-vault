@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/anle/codebase/internal/database"
 	"github.com/anle/codebase/internal/upload/domain/repository"
@@ -13,9 +14,9 @@ type DeleteExpiredFileRepository struct {
 	s3Client *minio.Client
 }
 
-func NewDeleteExpiredFileRepository(queries *database.Queries, s3Client *minio.Client) repository.IDeleteExpiredFileRepository {
+func NewDeleteExpiredFileRepository(dbConn *sql.DB, s3Client *minio.Client) repository.IDeleteExpiredFileRepository {
 	return &DeleteExpiredFileRepository{
-		queries:  queries,
+		queries:  database.New(dbConn),
 		s3Client: s3Client,
 	}
 }

@@ -9,8 +9,11 @@ import (
 type UploadRouter struct{}
 
 func (ar *UploadRouter) InitUploadRouter(router *gin.RouterGroup) {
-	uploadHandler, _ := wire.InitUploadRouterHandler(global.Mdb, global.MinioClient)
+	// Initialize the cron job for deleting expired files
+	DeleteCronHandler, _ := wire.InitDeleteExpiredFileService(global.Mdb, global.MinioClient)
+	DeleteCronHandler.RegisterDeleteCron()
 
+	uploadHandler, _ := wire.InitUploadRouterHandler(global.Mdb, global.MinioClient)
 	AuthRouterPublic := router.Group("/upload")
 
 	{

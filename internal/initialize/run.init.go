@@ -2,6 +2,7 @@ package initialize
 
 func Run() {
 	LoadConfig()
+	InitCronJob()
 	InitLogger()
 	InitMysql()
 	InitRedis()
