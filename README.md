@@ -32,3 +32,12 @@ Create bucket name "uploaded-files" by using minIO GUI :)
 ```
 ./secure-file-value
 ```
+
+## 📝 Tech Stack
+- **Language**: Go 1.20+
+- **Cache**: Redis
+- **Queue**: Apache Kafka (KRaft mode)
+- **Storage**: MinIO
+- **Database**: MySQL 5.7
+- **Migration**: goose
+- **Containerization**: Docker + Docker Compose
