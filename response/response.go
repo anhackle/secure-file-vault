@@ -37,6 +37,8 @@ func HandleResult(c *gin.Context, result int, data any) {
 
 	case ErrCodeContentTypeNotAllowd:
 		ErrorResponseExternal(c, result, nil)
+	case ErrCodeFileNotFound:
+		ErrorResponseExternal(c, result, nil)
 	}
 }
 

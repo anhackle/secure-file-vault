@@ -24,6 +24,9 @@ func InitRouter() *gin.Engine {
 	{
 		uploadRouter := uploadrouter.NewUploadRouter()
 		uploadRouter.InitUploadRouter(MainGroup)
+
+		shareRouter := uploadrouter.NewShareRouter()
+		shareRouter.InitShareRouter(MainGroup)
 	}
 
 	return r
