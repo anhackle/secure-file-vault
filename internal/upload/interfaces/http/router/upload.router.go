@@ -14,10 +14,10 @@ func (ar *UploadRouter) InitUploadRouter(router *gin.RouterGroup) {
 	DeleteCronHandler.RegisterDeleteCron()
 
 	uploadHandler, _ := wire.InitUploadRouterHandler(global.Mdb, global.MinioClient)
-	AuthRouterPublic := router.Group("/upload")
+	UploadRouterPublic := router.Group("/upload")
 
 	{
-		AuthRouterPublic.POST("/", uploadHandler.Upload)
+		UploadRouterPublic.POST("/", uploadHandler.Upload)
 	}
 }
 

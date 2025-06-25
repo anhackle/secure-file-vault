@@ -13,7 +13,17 @@ import (
 	"github.com/anle/codebase/internal/upload/interfaces/cron"
 	"github.com/anle/codebase/internal/upload/interfaces/http/handler"
 	"github.com/minio/minio-go/v7"
+	"github.com/redis/go-redis/v9"
 )
+
+// Injectors from share.wire.go:
+
+func InitShareRouterHandler(dbc *sql.DB, s3Client *minio.Client, redisClient *redis.Client) (*handler.ShareHandler, error) {
+	iShareRepository := repository.NewShareRepository(dbc, s3Client, redisClient)
+	iShareService := usecase.NewShareService(iShareRepository)
+	shareHandler := handler.NewShareHandler(iShareService)
+	return shareHandler, nil
+}
 
 // Injectors from upload.wire.go:
 

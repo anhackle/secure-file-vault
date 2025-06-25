@@ -8,6 +8,7 @@ const (
 	ErrCodeUserHasExists        = 40003
 	ErrCodeExtensionNotAllowed  = 40004
 	ErrCodeContentTypeNotAllowd = 40005
+	ErrCodeFileNotFound         = 40006
 	ErrCodeInternal             = 50000
 )
 
@@ -21,4 +22,5 @@ var msg = map[int]string{
 	ErrCodeNotAuthorize:         "Not authorized",
 	ErrCodeExtensionNotAllowed:  "File extension not allowed",
 	ErrCodeContentTypeNotAllowd: "Content type not allowed",
+	ErrCodeFileNotFound:         "File not found",
 }
