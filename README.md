@@ -1,9 +1,9 @@
 ## Go to the project directory
 ```
-cd cungsao
+cd secure-file-vault
 ```
 
-## Run docker compose to initialize MySQL, Redis and Kafka
+## Run docker compose to initialize MySQL, Redis and minIO
 ```
 docker compose up -d
 ```
@@ -20,10 +20,15 @@ mv config/production.yaml.example config/production.yaml
 
 ## Build
 ```
-go build -o cungsao cmd/server/main.go
+go build -o secure-file-value cmd/server/main.go
+```
+
+## Create bucket in minIO
+```
+Create bucket name "uploaded-files" by using minIO GUI :)
 ```
 
 ## Run
 ```
-./cungsao
+./secure-file-value
 ```
